@@ -1,4 +1,4 @@
-import { assert, expect } from "chai";
+import { assert } from "chai";
 import { ethers } from "hardhat";
 import { SimpleStorage, SimpleStorage__factory } from "../typechain-types";
 import { Signer } from "ethers";
