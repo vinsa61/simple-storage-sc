@@ -4,6 +4,8 @@ pragma solidity ^0.8.28;
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
+error UserAlreadyExists();
+
 contract UserRegistry {
     struct User {
         uint id;
@@ -13,12 +15,18 @@ contract UserRegistry {
     mapping(address => User) public users;
 
     function registerUser(uint _id, uint balance) public {
-        users[msg.sender].id = _id;
-        users[msg.sender].balance = balance;
-        users[msg.sender].isActive = true;
+        User storage user = users[msg.sender];
+        if(user.isActive){
+            revert UserAlreadyExists();
+        }
+        user.id = _id;
+        user.balance = balance;
+        user.isActive = true;
     }
 
     function deactivateUser() public {
-        users[msg.sender].isActive = false;
+        User storage user = users[msg.sender];
+        require(user.isActive, "User is already inactive.");
+        user.isActive = false;
     }
 }

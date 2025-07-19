@@ -1,7 +1,8 @@
-import { assert } from "chai";
+import { assert, expect } from "chai";
 import { ethers } from "hardhat";
 import { UserRegistry, UserRegistry__factory } from "../typechain-types";
 import { Signer } from "ethers";
+import "@nomicfoundation/hardhat-chai-matchers";
 
 describe("User Registry Test", function () {
   let userRegistry: UserRegistry;
@@ -37,4 +38,16 @@ describe("User Registry Test", function () {
     assert.equal(unknown.balance, 0n);
     assert.equal(unknown.isActive, false);
   });
+
+  it("Register Existing User", async function () {
+    await userRegistry.registerUser(1, 1000);
+    await expect(userRegistry.registerUser(1, 1000))
+    .to.be.revertedWithCustomError(userRegistry, "UserAlreadyExists");
+  });
+
+  it("Deactivate Inactive User", async function () {
+    await expect(userRegistry.deactivateUser())
+    .to.be.revertedWith("User is already inactive.");
+  });
+
 });
