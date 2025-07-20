@@ -29,4 +29,11 @@ contract UserRegistry {
         require(user.isActive, "User is already inactive.");
         user.isActive = false;
     }
+
+    function deposit() public payable {
+        User storage user = users[msg.sender];
+        require(user.isActive, "User is inactive or not registered.");
+        user.balance += msg.value;
+    }
+
 }
