@@ -5,6 +5,7 @@ pragma solidity ^0.8.28;
 // import "hardhat/console.sol";
 
 error UserAlreadyExists();
+error UserInactive();
 
 contract UserRegistry {
     struct User {
@@ -14,34 +15,42 @@ contract UserRegistry {
     }
     mapping(address => User) public users;
 
-    function registerUser(uint _id, uint balance) public {
-        User storage user = users[msg.sender];
-        if(user.isActive){
+    modifier isRegistered {
+        if (users[msg.sender].id > 0){
             revert UserAlreadyExists();
         }
+        _;
+    }
+
+    modifier isActive {
+        if (!users[msg.sender].isActive) {
+            revert UserInactive();
+        }
+        _;
+    }
+
+    function registerUser(uint _id, uint balance) public isRegistered {
+        User storage user = users[msg.sender];
         user.id = _id;
         user.balance = balance;
         user.isActive = true;
     }
 
-    function deactivateUser() public {
+    function deactivateUser() public isActive {
         User storage user = users[msg.sender];
-        require(user.isActive, "User is already inactive.");
         user.isActive = false;
     }
 
-    function deposit() public payable {
+    function deposit() public payable isActive {
         User storage user = users[msg.sender];
-        require(user.isActive, "User is inactive or not registered.");
         user.balance += msg.value;
     }
 
-    function withdraw() external payable {
+    function withdraw() external payable isActive {
         User storage user = users[msg.sender];
-        require(user.isActive, "User is inactive or not registered.");
         require(user.balance >= msg.value && msg.value > 0, "User balance is insufficient.");
-
         user.balance -= msg.value;
+
         (bool success, ) = msg.sender.call{value: msg.value}("");
         require(success, "Failed to send Ether.");
     }

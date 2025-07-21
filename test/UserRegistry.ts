@@ -47,9 +47,8 @@ describe("User Registry Test", function () {
   });
 
   it("Deactivate Inactive User", async function () {
-    await expect(userRegistry.deactivateUser()).to.be.revertedWith(
-      "User is already inactive."
-    );
+    await expect(userRegistry.deactivateUser())
+    .to.be.revertedWithCustomError(userRegistry, "UserInactive");
   });
 
   it("Registered User Deposit", async function () {
@@ -64,7 +63,7 @@ describe("User Registry Test", function () {
   it("Unregistered or Inactive User Deposit", async function () {
     await expect(
       userRegistry.connect(account).deposit({ value: ethers.parseEther("1.0") })
-    ).to.be.revertedWith("User is inactive or not registered.");
+    ).to.be.revertedWithCustomError(userRegistry, "UserInactive");
   });
 
   it("Sucessful Withdraw", async function () {
@@ -82,8 +81,7 @@ describe("User Registry Test", function () {
 
   it("Invalid User Withdraw", async function () {
     await expect(userRegistry.withdraw({ value: ethers.parseEther("4.0") }))
-    .to.be.revertedWith("User is inactive or not registered.");
-    
+    .to.be.revertedWithCustomError(userRegistry, "UserInactive");
   });
 
 });
