@@ -66,4 +66,24 @@ describe("User Registry Test", function () {
       userRegistry.connect(account).deposit({ value: ethers.parseEther("1.0") })
     ).to.be.revertedWith("User is inactive or not registered.");
   });
+
+  it("Sucessful Withdraw", async function () {
+    await userRegistry.registerUser(1, ethers.parseEther("5.0"));
+    await userRegistry.withdraw({ value: ethers.parseEther("2.0") });
+    const user = await userRegistry.users(await account.getAddress());
+    assert.equal(user.balance, ethers.parseEther("3.0"));
+  });
+
+  it("Insufficient Balance to Withdraw", async function () {
+    await userRegistry.registerUser(1, ethers.parseEther("5.0"));
+    await expect(userRegistry.withdraw({ value: ethers.parseEther("7.0") }))
+    .to.be.revertedWith("User balance is insufficient.");
+  });
+
+  it("Invalid User Withdraw", async function () {
+    await expect(userRegistry.withdraw({ value: ethers.parseEther("4.0") }))
+    .to.be.revertedWith("User is inactive or not registered.");
+    
+  });
+
 });

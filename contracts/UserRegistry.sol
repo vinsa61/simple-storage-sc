@@ -36,4 +36,14 @@ contract UserRegistry {
         user.balance += msg.value;
     }
 
+    function withdraw() external payable {
+        User storage user = users[msg.sender];
+        require(user.isActive, "User is inactive or not registered.");
+        require(user.balance >= msg.value && msg.value > 0, "User balance is insufficient.");
+
+        user.balance -= msg.value;
+        (bool success, ) = msg.sender.call{value: msg.value}("");
+        require(success, "Failed to send Ether.");
+    }
+
 }
