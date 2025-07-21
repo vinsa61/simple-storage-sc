@@ -16,3 +16,9 @@
 18.00 - 18.30 Eat
 18.30 - 20.30 Entertainment
 20.30 - 21.00 Prepare to sleep
+
+Performance Check:
+1. 12.30
+2. 14.45
+3. The specific cause of the delay is I can't sleep during night, I only sleep 3 hours and then woke up, I spent 2-3 hours more trying to sleep, ended up in just laying down. At 4AM, research about daily calorie consumption. At 6AM, I watched movies to prevent sleeping. At 8AM, I ate. At 10AM, I start all the work, but not deep focus, a bit distracted, and full focus at around 11.30AM. So the main problem is I can't sleep and I'm really sleepy.
+4. Because I'm really sleepy, I can sleep well today and respect the schedule that I've made
