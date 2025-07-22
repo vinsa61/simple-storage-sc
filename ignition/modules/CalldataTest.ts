@@ -6,6 +6,8 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 export default buildModule("CalldataTestModule", (m) => {
   const calldataTest = m.contract("CalldataTest");
 
+  // const tester = m.contract("Tester", [calldataTest]);
+
   return {calldataTest};
 });
 

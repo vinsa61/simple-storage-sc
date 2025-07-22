@@ -1,12 +1,14 @@
 import type { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox-viem";
-import "@nomicfoundation/hardhat-ethers";
+import "@nomicfoundation/hardhat-ignition-ethers";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter"
 
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.28"
+  },
+  gasReporter: {
+    enabled: true, // This is the key. Set to true to see the report on every run.
   },
   networks: {
     localnet: {
