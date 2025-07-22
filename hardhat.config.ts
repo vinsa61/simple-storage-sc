@@ -2,9 +2,12 @@ import type { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox-viem";
 import "@nomicfoundation/hardhat-ethers";
 import "@typechain/hardhat";
+import "hardhat-gas-reporter"
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28",
+  solidity: {
+    version: "0.8.28"
+  },
   networks: {
     localnet: {
       url: "http://127.0.0.1:8545/",

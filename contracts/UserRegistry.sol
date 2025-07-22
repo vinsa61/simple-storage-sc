@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
 // Uncomment this line to use console.log
@@ -9,8 +9,8 @@ error UserInactive();
 
 contract UserRegistry {
     struct User {
-        uint id;
-        uint balance;
+        uint128 id;
+        uint120 balance;
         bool isActive;
     }
     mapping(address => User) public users;
@@ -29,7 +29,7 @@ contract UserRegistry {
         _;
     }
 
-    function registerUser(uint _id, uint balance) public isRegistered {
+    function registerUser(uint128 _id, uint120 balance) public isRegistered {
         User storage user = users[msg.sender];
         user.id = _id;
         user.balance = balance;
@@ -43,13 +43,13 @@ contract UserRegistry {
 
     function deposit() public payable isActive {
         User storage user = users[msg.sender];
-        user.balance += msg.value;
+        user.balance += uint120(msg.value);
     }
 
     function withdraw() external payable isActive {
         User storage user = users[msg.sender];
         require(user.balance >= msg.value && msg.value > 0, "User balance is insufficient.");
-        user.balance -= msg.value;
+        user.balance -= uint120(msg.value);
 
         (bool success, ) = msg.sender.call{value: msg.value}("");
         require(success, "Failed to send Ether.");
